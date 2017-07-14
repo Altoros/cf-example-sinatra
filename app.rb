@@ -16,10 +16,10 @@ get '/' do
   @index = ENV['CF_INSTANCE_INDEX'] || "0"
 
   vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
-  db_user = vcap_services['p-mysql'].first['credentials']['username']
-  db_password = vcap_services['p-mysql'].first['credentials']['password']
-  db_host = vcap_services['p-mysql'].first['credentials']['hostname']
-  @db_name = vcap_services['p-mysql'].first['credentials']['name']
+  db_user = vcap_services['cleardb'].first['credentials']['username']
+  db_password = vcap_services['cleardb'].first['credentials']['password']
+  db_host = vcap_services['cleardb'].first['credentials']['hostname']
+  @db_name = vcap_services['cleardb'].first['credentials']['name']
 
   mysql_client = Mysql2::Client.new(host: db_host, username: db_user, password: db_password)
   @query_result = mysql_client.query("SELECT table_name FROM INFORMATION_SCHEMA.TABLES")
