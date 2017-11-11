@@ -2,7 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require "sinatra/reloader"
 require "json"
-require "mysql2"
+require 'pg'
 
 
 configure do
@@ -16,13 +16,17 @@ get '/' do
   @index = ENV['CF_INSTANCE_INDEX'] || "0"
 
   vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
-  db_user = vcap_services['p-mysql'].first['credentials']['username']
-  db_password = vcap_services['p-mysql'].first['credentials']['password']
-  db_host = vcap_services['p-mysql'].first['credentials']['hostname']
-  @db_name = vcap_services['p-mysql'].first['credentials']['name']
+  service_name = ENV['SERVICE_NAME']
+  url = vcap_services[service_name].first['credentials']['postgresuri']
+  user = vcap_services[service_name].first['credentials']['POSTGRES_USER']
+  password = vcap_services[service_name].first['credentials']['POSTGRES_PASSWORD']
+  db_name = vcap_services[service_name].first['credentials']['POSTGRES_DB']
+  pgUrl = URI.parse(url)
+#  host = vcap_services[service_name].first['credentials']['POSTGRES_HOST']
+#  port = vcap_services[service_name].first['credentials']['POSTGRES_PORT']
 
-  mysql_client = Mysql2::Client.new(host: db_host, username: db_user, password: db_password)
-  @query_result = mysql_client.query("SELECT table_name FROM INFORMATION_SCHEMA.TABLES")
+  conn = PGconn.connect( :host => pgUrl.host, :dbname => db_name, :port => 5432, :user => user, :password => password)
+  @query_result = conn.exec('SELECT version()')[0]
 
   erb :index
 end

@@ -1,7 +1,7 @@
-ruby '2.2.3'
+ruby '2.3.1'
 
 source "http://rubygems.org"
 
 gem "sinatra"
 gem "sinatra-contrib"
-gem "mysql2"
+gem "pg"

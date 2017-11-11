@@ -22,13 +22,9 @@
         <img src="https://lh5.googleusercontent.com/-aDaxlU0CssE/AAAAAAAAAAI/AAAAAAAABo4/HbWBRIZ_lK8/photo.jpg"></img>
         <img src="http://www.altoros.com/cflive/wp-content/uploads/2015/04/cloud-foundry-logo.png"></img>
         <div class="dbinfo">
-            <h3>Connected to the MySQL <%= @db_name %> database</h3>
-            <h4>Tables in the INFORMATION SCHEMA</h4>
-            <ul>
-              <% @query_result.each do |row| %>
-                  <li><%= row['table_name'] %></li>
-              <% end %>
-            </ul>
+            <h3>Connected to the Postgres <%= @db_name %> database</h3>
+            <h4>Version</h4>
+            <p><%= @query_result %></p>
         </div>
       </div>
     </div>

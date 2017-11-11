@@ -1,0 +1,6 @@
+---
+applications:
+- name: pg-app 
+  services: [ pgsql-service ]
+  env:
+    SERVICE_NAME:  postgres
